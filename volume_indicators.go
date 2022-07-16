@@ -5,6 +5,8 @@
 
 package indicator
 
+import "math"
+
 // Starting value for NVI.
 const NVI_STARTING_VALUE = 1000
 
@@ -31,6 +33,9 @@ func AccumulationDistribution(high, low, closing []float64, volume []int64) []fl
 		}
 
 		ad[i] += float64(volume[i]) * (((closing[i] - low[i]) - (high[i] - closing[i])) / (high[i] - low[i]))
+		if math.IsNaN(ad[i]) && i > 0 {
+			ad[i] = ad[i-1]
+		}
 	}
 
 	return ad
@@ -187,6 +192,9 @@ func NegativeVolumeIndex(closing []float64, volume []int64) []float64 {
 			nvi[i] = nvi[i-1]
 		} else {
 			nvi[i] = nvi[i-1] + (((closing[i] - closing[i-1]) / closing[i-1]) * nvi[i-1])
+			if math.IsNaN(nvi[i]) {
+				nvi[i] = nvi[i-1]
+			}
 		}
 	}
 

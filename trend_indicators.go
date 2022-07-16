@@ -614,7 +614,22 @@ func Vortex(high, low, closing []float64) ([]float64, []float64) {
 		trSum += tr[j]
 
 		plusVi[i] = plusVmSum / trSum
+		if math.IsNaN(plusVi[i]) {
+			if i == 1 {
+				plusVi[i] = 0
+			} else {
+				plusVi[i] = plusVi[i-1]
+			}
+		}
+
 		minusVi[i] = minusVmSum / trSum
+		if math.IsNaN(minusVi[i]) {
+			if i == 1 {
+				minusVi[i] = 0
+			} else {
+				minusVi[i] = minusVi[i-1]
+			}
+		}
 	}
 
 	return plusVi, minusVi
