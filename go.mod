@@ -1,3 +1,3 @@
-module github.com/leegitw/cinar-indicator
+module github.com/cinar/indicator
 
 go 1.14
